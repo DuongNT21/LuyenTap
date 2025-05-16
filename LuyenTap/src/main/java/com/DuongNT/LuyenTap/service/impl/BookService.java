@@ -45,6 +45,7 @@ public class BookService implements IBookService {
     public void deleteBook(int id) {
         Book book = bookRepository.findById(id).orElse(null);
         book.setActive(false);
+        System.out.println();
         bookRepository.save(book);
     }
 
