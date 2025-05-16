@@ -44,7 +44,8 @@ public class BookService implements IBookService {
     @Override
     public void deleteBook(int id) {
         Book book = bookRepository.findById(id).orElse(null);
-        bookRepository.delete(book);
+        book.setActive(false);
+        bookRepository.save(book);
     }
 
     @Override
@@ -78,16 +79,16 @@ public class BookService implements IBookService {
 
     @Override
     public List<GetBookResponse> getAllBook() {
-        List<Book> books = bookRepository.findAll();
+        List<Book> books = bookRepository.findAllByActive();
         List<GetBookResponse> responses = new ArrayList<>();
         for (Book book : books) {
-            GetBookResponse response = new GetBookResponse();
-            response.setName(book.getName());
-            response.setAuthor(book.getAuthor());
-            response.setCreatedAt(book.getCreatedAt());
-            response.setId(book.getId());
-            response.setCategoryId(book.getCategory().getId());
-            responses.add(response);
+            GetBookResponse item = new GetBookResponse();
+            item.setName(book.getName());
+            item.setAuthor(book.getAuthor());
+            item.setCreatedAt(book.getCreatedAt());
+            item.setId(book.getId());
+            item.setCategoryId(book.getCategory().getId());
+            responses.add(item);
         }
         return responses;
     }

@@ -23,6 +23,7 @@ public class CategoryService implements ICategoryService {
         CreateCategoryResponse response = new CreateCategoryResponse();
         category.setName(request.getName());
         response.setName(request.getName());
+        category.setActive(true);
         categoryRepository.save(category);
         return response;
     }
@@ -30,7 +31,15 @@ public class CategoryService implements ICategoryService {
     @Override
     public List<GetCategoryResponse> getAllCategory() {
         List<GetCategoryResponse> responses = new ArrayList<>();
-        List<Category> categories = categoryRepository.findAll();
+//        List<Category> categories = categoryRepository.findAll();
+//        for (Category category : categories){
+//            if(category.isActive() == true){
+//                GetCategoryResponse item = new GetCategoryResponse();
+//                item.setName(category.getName());
+//                responses.add(item);
+//            }
+//        }
+        List<Category> categories = categoryRepository.findAllByActive();
         for (Category category : categories){
             GetCategoryResponse item = new GetCategoryResponse();
             item.setName(category.getName());
@@ -50,7 +59,8 @@ public class CategoryService implements ICategoryService {
     @Override
     public boolean deleteCategory(int id) {
         Category category = categoryRepository.findById(id).orElse(null);
-        categoryRepository.delete(category);
+        category.setActive(false);
+        categoryRepository.save(category);
         return true;
     }
 
