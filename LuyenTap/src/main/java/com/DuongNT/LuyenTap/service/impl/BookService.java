@@ -1,6 +1,7 @@
 package com.DuongNT.LuyenTap.service.impl;
 
 import com.DuongNT.LuyenTap.dto.request.CreateBookRequest;
+import com.DuongNT.LuyenTap.dto.response.BaseResponse;
 import com.DuongNT.LuyenTap.dto.response.CreateBookResponse;
 import com.DuongNT.LuyenTap.dto.response.GetBookResponse;
 import com.DuongNT.LuyenTap.entity.Book;
@@ -9,6 +10,7 @@ import com.DuongNT.LuyenTap.repository.BookRepository;
 import com.DuongNT.LuyenTap.repository.CategoryRepository;
 import com.DuongNT.LuyenTap.service.interfaces.IBookService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -51,7 +53,13 @@ public class BookService implements IBookService {
 
     @Override
     public GetBookResponse getBookById(int id) {
-        Book book = bookRepository.findById(id).orElse(null);
+        BaseResponse baseResponse = new BaseResponse();
+        Book book = new Book();
+        try {
+             book = bookRepository.findById(id).orElseThrow(()-> new RuntimeException("Book not found"));
+        } catch (Exception e) {
+            throw new RuntimeException("Book not found");
+        }
         GetBookResponse response = new GetBookResponse();
         response.setName(book.getName());
         response.setAuthor(book.getAuthor());
@@ -65,12 +73,13 @@ public class BookService implements IBookService {
     public GetBookResponse updateBook(int id, CreateBookRequest request) {
         Book book = bookRepository.findById(id).orElse(null);
         Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
-        book.setName(request.getName());
-        book.setAuthor(request.getAuthor());
-        book.setPrice(request.getPrice());
-        book.setCategory(category);
+        book.setName(request.getName() == null ? book.getName() : request.getName());
+        book.setAuthor(request.getAuthor() == null ? book.getAuthor() : request.getAuthor());
+        book.setPrice(request.getPrice() == 0 ? book.getPrice() : request.getPrice());
+        book.setCategory(request.getCategoryId() == 0 ? book.getCategory() : category);
         bookRepository.save(book);
         GetBookResponse response = new GetBookResponse();
+        response.setId(book.getId());
         response.setName(book.getName());
         response.setAuthor(book.getAuthor());
         response.setPrice(book.getPrice());

@@ -1,6 +1,7 @@
 package com.DuongNT.LuyenTap.service.interfaces;
 
 import com.DuongNT.LuyenTap.dto.request.CreateBookRequest;
+import com.DuongNT.LuyenTap.dto.response.BaseResponse;
 import com.DuongNT.LuyenTap.dto.response.CreateBookResponse;
 import com.DuongNT.LuyenTap.dto.response.GetBookResponse;
 

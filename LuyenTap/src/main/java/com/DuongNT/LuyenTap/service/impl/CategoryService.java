@@ -68,7 +68,14 @@ public class CategoryService implements ICategoryService {
     public GetCategoryResponse updateCategory(int id, CreateCategoryRequest request) {
         Category category = categoryRepository.findById(id).orElse(null);
         GetCategoryResponse response = new GetCategoryResponse();
-        category.setName(request.getName());
+//        if (request.getName() == null) {
+//            response.setName(category.getName());
+//        } else {
+//            category.setName(request.getName());
+//            categoryRepository.save(category);
+//            response.setName(category.getName());
+//        }
+        category.setName(request.getName() == null ? category.getName() : request.getName());
         categoryRepository.save(category);
         response.setName(category.getName());
         return response;
