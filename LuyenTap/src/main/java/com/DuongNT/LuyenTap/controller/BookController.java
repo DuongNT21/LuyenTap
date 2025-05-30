@@ -45,6 +45,7 @@ public class BookController {
         );
     }
 
+
     @PutMapping("/update/{id}")
     public ResponseEntity<BaseResponse> updateBook(@PathVariable int id,@RequestBody CreateBookRequest request){
         GetBookResponse response = bookService.updateBook(id, request);
@@ -70,6 +71,7 @@ public class BookController {
                 )
         );
     }
+
 
     @GetMapping("/get")
     public ResponseEntity<BaseResponse> getAllBook(){

@@ -1,5 +1,7 @@
 package com.DuongNT.LuyenTap.service.impl;
 
+import com.DuongNT.LuyenTap.Exception.BadRequestException;
+import com.DuongNT.LuyenTap.Exception.NotFoundException;
 import com.DuongNT.LuyenTap.dto.request.CreateBookRequest;
 import com.DuongNT.LuyenTap.dto.response.BaseResponse;
 import com.DuongNT.LuyenTap.dto.response.CreateBookResponse;
@@ -55,11 +57,12 @@ public class BookService implements IBookService {
     public GetBookResponse getBookById(int id) {
         BaseResponse baseResponse = new BaseResponse();
         Book book = new Book();
-        try {
-             book = bookRepository.findById(id).orElseThrow(()-> new RuntimeException("Book not found"));
-        } catch (Exception e) {
-            throw new RuntimeException("Book not found");
-        }
+//        try {
+//             book = bookRepository.findById(id).orElseThrow(()-> new RuntimeException("Book not found"));
+//        } catch (Exception e) {
+//            throw new RuntimeException("Book not found");
+//        }
+        book = bookRepository.findById(id).orElseThrow(()-> new BadRequestException("te vl"));
         GetBookResponse response = new GetBookResponse();
         response.setName(book.getName());
         response.setAuthor(book.getAuthor());

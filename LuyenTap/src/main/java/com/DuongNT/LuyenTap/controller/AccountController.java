@@ -1,6 +1,7 @@
 package com.DuongNT.LuyenTap.controller;
 
 import com.DuongNT.LuyenTap.dto.request.CreateAccountRequest;
+import com.DuongNT.LuyenTap.dto.request.LoginRequest;
 import com.DuongNT.LuyenTap.dto.response.BaseResponse;
 import com.DuongNT.LuyenTap.dto.response.CreateAccountResponse;
 import com.DuongNT.LuyenTap.dto.response.CreateBookResponse;
@@ -79,4 +80,18 @@ public class AccountController {
         );
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<BaseResponse> login(LoginRequest request) {
+        BaseResponse response = new BaseResponse();
+        try {
+            response = new BaseResponse(
+                    "200",
+                    "Login success",
+                    accountService.login(request)
+            );
+        } catch (Exception e) {
+            response = new BaseResponse();
+        }
+        return ResponseEntity.ok(response);
+    }
 }
